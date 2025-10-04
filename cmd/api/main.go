@@ -52,15 +52,23 @@ func handleGracefulShutdown(ctx context.Context, app *fiber.App, serverErrors <-
 
 	select {
 	case err := <-serverErrors:
-		log.Fatalf("Server error: %v", err)
-	case <-quit:
-		log.Info("Shutting down server...")
-		if err := app.Shutdown(); err != nil {
-			log.Fatalf("Error during server shutdown: %v", err)
-		}
+		log.Info("Server error: %v", err)
+	case sig := <-quit:
+		log.Info("Shutting down server due to signal: %v", sig)
 	case <-ctx.Done():
-		log.Info("Server exiting due to context cancellation")
+		log.Info("Shutting down server due to context cancellation")
 	}
 
-	log.Info("Server exited")
+	// Perform shutdown
+	if err := app.ShutdownWithContext(ctx); err != nil {
+		log.Info("Error during shutdown: %v", err)
+	}
+
+	// Wait for background workers (if any)
+	if config.SW != nil {
+		log.Info("Completing background tasks...")
+		config.SW.Wait()
+	}
+
+	log.Info("Server exited cleanly")
 }

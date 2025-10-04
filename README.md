@@ -12,7 +12,7 @@ This template follows a **feature-based modular architecture** for scalable, mai
 - 🗄️ **PostgreSQL integration** — via `pgx` driver
 - 🧰 **Docker-ready setup** — with `.env` auto-loading and `docker-compose`
 - 🔒 **JWT authentication middleware**
-- 🧾 **Swagger API docs** — Auto-generated OpenAPI 3.0 spec `(todo)`
+- 🧾 **Swagger API docs** — Auto-generated OpenAPI 3.0 spec
 - 🧪 **Unit testing support** `(todo)`
 - 🧩 **Graceful shutdown & centralized logging**
 - 🧰 **Config management** using `flags` and structured configs

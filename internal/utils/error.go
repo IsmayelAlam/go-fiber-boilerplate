@@ -11,7 +11,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-type Common struct {
+type CommonError struct {
 	Code    int    `json:"code"`
 	Status  string `json:"status"`
 	Message string `json:"message"`
@@ -72,7 +72,7 @@ func Error(c *fiber.Ctx, statusCode int, message string, details any) error {
 			Errors:  details,
 		})
 	} else {
-		errRes = c.Status(statusCode).JSON(Common{
+		errRes = c.Status(statusCode).JSON(CommonError{
 			Code:    statusCode,
 			Status:  "error",
 			Message: message,

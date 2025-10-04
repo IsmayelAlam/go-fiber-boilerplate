@@ -11,11 +11,14 @@ CREATE TABLE users(
     password_changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     -- Personal info
     name VARCHAR(255) NOT NULL DEFAULT '',
+    date_of_birth DATE,
+    phone VARCHAR(20),
     -- Keep NOT NULL for consistency
     -- Verification & security
     verified_email BOOLEAN NOT NULL DEFAULT FALSE,
     -- Account status (prevent hard deletes)
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    onboarded BOOLEAN NOT NULL DEFAULT FALSE,
     deactivated_at TIMESTAMP,
     -- Timestamps (with ON UPDATE for updated_at)
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

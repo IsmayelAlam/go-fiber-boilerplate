@@ -4,6 +4,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// Health check
+//
+//	@Summary		Application health check
+//	@Description	Checks the status of critical dependencies (e.g., database, memory). Returns overall health status and individual service statuses.
+//	@Tags			System
+//	@Produce		json
+//	@Success		200	{object}	HealthCheckResponse	"All services are healthy"
+//	@Success		500	{object}	utils.CommonError	"One or more services are unhealthy"
+//	@Router			/health-check [get]
 func (s *healthCheckService) Check(c *fiber.Ctx) error {
 	isHealthy := true
 	var serviceList []HealthCheck

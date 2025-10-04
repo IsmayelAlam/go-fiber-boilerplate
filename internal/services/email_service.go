@@ -46,8 +46,12 @@ func (es *emailService) SendEmail(to, subject, body string) error {
 }
 
 func (es *emailService) background(fn func()) {
+	// Increment the WaitGroup counter
+	config.SW.Add(1)
 	go func() {
 		defer func() {
+			// Decrement the counter when the goroutine completes
+			defer config.SW.Done()
 			if err := recover(); err != nil {
 				slog.Error(fmt.Sprintf("Panic in background email task: %v", err))
 			}

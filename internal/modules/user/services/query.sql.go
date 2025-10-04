@@ -54,7 +54,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id uuid.UUID) error {
 }
 
 const getAllUsers = `-- name: GetAllUsers :many
-SELECT id, email, email_normalized, password_hash, password_changed_at, name, verified_email, is_active, deactivated_at, created_at, updated_at, version, last_login_at, failed_login_attempts, locked_until
+SELECT id, email, email_normalized, password_hash, password_changed_at, name, date_of_birth, phone, verified_email, is_active, onboarded, deactivated_at, created_at, updated_at, version, last_login_at, failed_login_attempts, locked_until
 FROM users
 ORDER BY name
 `
@@ -75,8 +75,11 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 			&i.PasswordHash,
 			&i.PasswordChangedAt,
 			&i.Name,
+			&i.DateOfBirth,
+			&i.Phone,
 			&i.VerifiedEmail,
 			&i.IsActive,
+			&i.Onboarded,
 			&i.DeactivatedAt,
 			&i.CreatedAt,
 			&i.UpdatedAt,

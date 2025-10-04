@@ -5,7 +5,7 @@ func (am *AuthModule) SetupRoutes() {
 
 	auth.Post("/register", am.register)
 	auth.Post("/login", am.login)
-	auth.Post("/refresh-tokens", am.refreshTokens)
+	auth.Post("/refresh", am.refreshTokens)
 	auth.Post("/forgot-password", am.forgotPassword)
 	auth.Post("/reset-password", am.resetPassword)
 	auth.Post("/send-verification-email", am.sendVerificationEmail)

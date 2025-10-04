@@ -30,6 +30,10 @@
             {
               "column": "users.updated_at",
               "go_struct_tag": "json:\"-\""
+            },
+            {
+              "column": "users.created_at",
+              "go_struct_tag": "json:\"-\""
             }
           ]
         }

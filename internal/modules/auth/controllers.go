@@ -12,6 +12,18 @@ import (
 	"github.com/google/uuid"
 )
 
+// Register a new user
+//
+//	@Summary		Register new user
+//	@Description	Register a new user with email and password. A 6-digit verification code will be sent to the provided email.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		registerData				true	"Registration payload"
+//	@Success		200		{object}	userServices.CreateUserRow	"User created successfully. Check email for verification code."
+//	@Failure		400		{object}	utils.CommonError			"Bad Request: Invalid input data"
+//
+//	@Router			/auth/register [post]
 func (am *AuthModule) register(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -64,6 +76,18 @@ func (am *AuthModule) register(c *fiber.Ctx) error {
 	})
 }
 
+// Login user
+//
+//	@Summary		Login user
+//	@Description	Authenticate user with email and password. Returns access token and user info. If email is not verified, sends a new verification code and returns user ID with verified_email=false.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		registerData			true	"Login credentials (email and password)"
+//	@Success		200		{object}	utils.GenericResponse	"Login successful. Contains user info and access token."
+//	@Failure		400		{object}	utils.CommonError"Bad Request: Invalid input format"\
+//
+//	@Router			/auth/login [post]
 func (am *AuthModule) login(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -164,6 +188,17 @@ func (am *AuthModule) login(c *fiber.Ctx) error {
 	})
 }
 
+// Refresh access token or logout
+//
+//	@Summary		Refresh access token or logout
+//	@Description	Refreshes the access token using a valid refresh token from cookies. If 'logout' is true in the request body, invalidates the session and returns a success message.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		refreshTokensData		true	"Refresh token request (set 'logout': true to log out)"
+//	@Success		200		{object}	utils.GenericResponse	"Returns new access token and user info, or logout confirmation message"
+//	@Failure		400		{object}	utils.CommonError		"Bad Request: Invalid request body"
+//	@Router			/auth/refresh [post]
 func (am *AuthModule) refreshTokens(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -220,6 +255,17 @@ func (am *AuthModule) refreshTokens(c *fiber.Ctx) error {
 	})
 }
 
+// Request password reset
+//
+//	@Summary		Request password reset
+//	@Description	Sends a password reset email to the provided address if the user exists. To prevent email enumeration, the same success response is returned regardless of whether the email is registered.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		forgotPasswordData		true	"Email address for password reset"
+//	@Success		200		{object}	utils.GenericResponse	"Success message (always returned to prevent email enumeration)"
+//	@Failure		400		{object}	utils.CommonError		"Bad Request: Invalid email format or missing field"
+//	@Router			/auth/forgot-password [post]
 func (am *AuthModule) forgotPassword(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -270,6 +316,17 @@ func (am *AuthModule) forgotPassword(c *fiber.Ctx) error {
 	})
 }
 
+// Reset user password
+//
+//	@Summary		Reset password
+//	@Description	Resets the user's password using a valid password reset token. The token is invalidated after use.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		resetPasswordData	true	"Password reset payload (token, password, confirm_password)"
+//	@Success		200		{object}	utils.GenericResponse"Password reset successfully"
+//	@Failure		400		{object}	utils.CommonError	"Bad Request: Invalid token, expired token, or passwords do not match"
+//	@Router			/auth/reset-password [post]
 func (am *AuthModule) resetPassword(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -317,6 +374,17 @@ func (am *AuthModule) resetPassword(c *fiber.Ctx) error {
 	})
 }
 
+// Resend email verification
+//
+//	@Summary		Resend verification email
+//	@Description	Generates a new email verification OTP and sends it to the user's registered email address. Any existing verification token is invalidated.
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		resendVerifyEmailData	true	"User ID for email verification resend"
+//	@Success		200		{object}	utils.GenericResponse	"Verification email sent successfully"
+//	@Failure		400		{object}	utils.CommonError		"Bad Request: Invalid user ID format or missing field"
+//	@Router			/auth/send-verification-email [post]
 func (am *AuthModule) sendVerificationEmail(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -361,6 +429,17 @@ func (am *AuthModule) sendVerificationEmail(c *fiber.Ctx) error {
 	})
 }
 
+// Verify user email with OTP
+//
+//	@Summary		Verify email with OTP
+//	@Description	Verifies the user's email using a 6-digit OTP. On success, marks the email as verified, deletes the OTP, and issues new JWT tokens (access token in response, refresh token in HTTP-only cookie).
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		verifyEmailData			true	"User ID and OTP for email verification"
+//	@Success		200		{object}	utils.GenericResponse	"Email verified successfully"
+//	@Failure		400		{object}	utils.CommonError		"Bad Request: Invalid OTP, expired OTP, or invalid request format"
+//	@Router			/auth/verify-email [post]
 func (am *AuthModule) verifyEmail(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
 	defer cancel()
@@ -399,6 +478,12 @@ func (am *AuthModule) verifyEmail(c *fiber.Ctx) error {
 		return err
 	}
 
+	// Get user
+	user, err := am.user.GetUserById(ctx, req.UserID)
+	if err != nil {
+		return err
+	}
+
 	// Generate JWT tokens
 	tokens, _ := am.jwt.GenerateToken(req.UserID)
 
@@ -406,7 +491,12 @@ func (am *AuthModule) verifyEmail(c *fiber.Ctx) error {
 	am.jwt.SetRefreshCookie(c, tokens.RefreshToken)
 
 	return c.JSON(fiber.Map{
-		"data": fiber.Map{"message": "Email verified successfully"},
+		"data": fiber.Map{
+			"email":  user.Email,
+			"name":   user.Name,
+			"id":     user.ID,
+			"aToken": tokens.Token,
+		},
 	})
 }
 

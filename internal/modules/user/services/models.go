@@ -18,10 +18,13 @@ type User struct {
 	PasswordHash        string         `json:"-"`
 	PasswordChangedAt   time.Time      `json:"password_changed_at"`
 	Name                string         `json:"name"`
+	DateOfBirth         sql.NullTime   `json:"date_of_birth"`
+	Phone               sql.NullString `json:"phone"`
 	VerifiedEmail       bool           `json:"verified_email"`
 	IsActive            bool           `json:"-"`
+	Onboarded           bool           `json:"onboarded"`
 	DeactivatedAt       sql.NullTime   `json:"deactivated_at"`
-	CreatedAt           time.Time      `json:"created_at"`
+	CreatedAt           time.Time      `json:"-"`
 	UpdatedAt           time.Time      `json:"-"`
 	Version             int32          `json:"version"`
 	LastLoginAt         sql.NullTime   `json:"-"`

@@ -25,6 +25,12 @@ confirm:
 run:
 	air
 
+.PHONY: docs
+docs:
+	swag fmt
+	swag init -g cmd/docs/main.go --output temp/
+	go run cmd/docs/main.go
+
 ## module/new module='module_name': create a new module
 .PHONY: module/new
 module/new:

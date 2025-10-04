@@ -1,6 +1,7 @@
 package config
 
 import (
+	"sync"
 	"varaden/server/internal/utils"
 )
 
@@ -10,6 +11,7 @@ var (
 	IsDevelopment = false
 	IsStaging     = false
 	IsProduction  = false
+	SW            = &sync.WaitGroup{}
 	JWTConfig     = &utils.JWTConfig{
 		Issuer:              "your-issuer",
 		Audience:            "your-audience",
