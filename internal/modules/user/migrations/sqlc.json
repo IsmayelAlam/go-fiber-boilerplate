@@ -1,0 +1,39 @@
+{
+  "version": "2",
+  "sql": [
+    {
+      "engine": "postgresql",
+      "schema": "../migrations/*.sql",
+      "queries": "../queries/*.sql",
+      "gen": {
+        "go": {
+          "package": "userServices",
+          "out": "../services",
+          "emit_json_tags": true,
+          "overrides": [
+            {
+              "column": "users.password_hash",
+              "go_struct_tag": "json:\"-\""
+            },
+            {
+              "column": "users.is_active",
+              "go_struct_tag": "json:\"-\""
+            },
+            {
+              "column": "users.last_login_at",
+              "go_struct_tag": "json:\"-\""
+            },
+            {
+              "column": "users.locked_until",
+              "go_struct_tag": "json:\"-\""
+            },
+            {
+              "column": "users.updated_at",
+              "go_struct_tag": "json:\"-\""
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

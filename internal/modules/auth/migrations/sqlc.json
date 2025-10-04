@@ -1,0 +1,17 @@
+{
+  "version": "2",
+  "sql": [
+    {
+      "engine": "postgresql",
+      "schema": "../migrations/*.sql",
+      "queries": "../queries/*.sql",
+      "gen": {
+        "go": {
+          "package": "authServices",
+          "out": "../services",
+          "emit_json_tags": true
+        }
+      }
+    }
+  ]
+}

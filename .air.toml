@@ -1,0 +1,28 @@
+root = "."
+tmp_dir = "build"
+
+[build]
+  args_bin = [
+    "-port=8080",
+    "-env=development",
+    "-db-host=postgres",
+    "-db-port=5432",
+    "-db-user=postgres",
+    "-db-password=postgres",
+    "-db-dbname=postgres",
+    "-db-sslmode=disable",
+    "-db-timezone=UTC"
+  ]
+  cmd = "go build -o ./build/main ./cmd/api"
+  bin = "./build/main"
+  delay = 1000
+  exclude_dir = ["assets", "tmp", "vendor", "test", "build"]
+  include_ext = ["go", "html", "tmpl", "tpl"]
+
+[color]
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+
+[log]
+  time = false
