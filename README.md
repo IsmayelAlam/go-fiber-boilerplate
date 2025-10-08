@@ -1,25 +1,25 @@
-# 🚀 Go Fiber Feature Based Backend Boilerplate
+# Go Fiber Feature Based Backend Boilerplate
 
 A clean, production-ready **Go backend boilerplate** built with the [Fiber](https://gofiber.io/) framework, **PostgreSQL**, and **Swagger documentation**.  
 This template follows a **feature-based modular architecture** for scalable, maintainable backend development.
 
 ---
 
-## 🧩 Key Features
+##  Key Features
 
-- ⚡ **High-performance HTTP framework** — Powered by Fiber
-- 🧱 **Feature-based modular design** — Scales cleanly as your app grows
-- 🗄️ **PostgreSQL integration** — via `pgx` driver
-- 🧰 **Docker-ready setup** — with `.env` auto-loading and `docker-compose`
-- 🔒 **JWT authentication middleware**
-- 🧾 **Swagger API docs** — Auto-generated OpenAPI 3.0 spec
-- 🧪 **Unit testing support** `(todo)`
-- 🧩 **Graceful shutdown & centralized logging**
-- 🧰 **Config management** using `flags` and structured configs
+- **High-performance HTTP framework** — Powered by Fiber
+- **Feature-based modular design** — Scales cleanly as your app grows
+- **PostgreSQL integration** — via `pgx` driver
+- **Docker-ready setup** — with `.env` auto-loading and `docker-compose`
+- **JWT authentication middleware**
+- **Swagger API docs** — Auto-generated OpenAPI 3.0 spec
+- **Unit testing support** `(todo)`
+- **Graceful shutdown & centralized logging**
+- **Config management** using `flags` and structured configs
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 ├── cmd/
@@ -56,7 +56,7 @@ This template follows a **feature-based modular architecture** for scalable, mai
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -121,7 +121,7 @@ This project is licensed under the `MIT` License.
 
 - Commit your changes
 
-- Open a PR 🚀
+- Open a PR 
 
 ### Author
 
